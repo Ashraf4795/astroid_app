@@ -11,19 +11,20 @@ class AsteroidRepository(
     private val localDataSource: LocalDataSource
 ) : Repository {
 
-    override suspend fun getAsteroids(offline: Boolean): List<Asteroid> {
-        return if (offline) {
-            localDataSource.getAsteroids()
-        } else {
-            remoteDataSource.getAsteroids()
-        }
+    override suspend fun getAsteroidsRemote(startData: String, endDate: String, apiKey: String): List<Asteroid> {
+        return remoteDataSource.getAsteroids(startData, endDate, apiKey)
     }
 
-    override suspend fun getPictureOfTheDay(offline: Boolean): PictureOfDay {
-        return if (offline) {
-            localDataSource.getPictureOfTheDay()
-        } else {
-            remoteDataSource.getPictureOfTheDay()
-        }
+    override suspend fun getPictureOfTheDayRemote(apiKey: String): PictureOfDay {
+        return remoteDataSource.getPictureOfTheDay(apiKey)
     }
+
+    override suspend fun getAsteroidsLocal(): List<Asteroid> {
+        return localDataSource.getAsteroids()
+    }
+
+    override suspend fun getPictureOfTheDayLocal(): PictureOfDay {
+        return localDataSource.getPictureOfTheDay()
+    }
+
 }
