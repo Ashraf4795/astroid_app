@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.base.data.contract.Repository
+import com.udacity.asteroidradar.base.data.local.room.entity.AsteroidEntity
 import com.udacity.asteroidradar.base.data.model.Asteroid
 import com.udacity.asteroidradar.base.utils.Status
 import com.udacity.asteroidradar.base.utils.getNextSevenDaysFormattedDates
@@ -33,7 +34,15 @@ class MainViewModel(
             )
             withContext(Dispatchers.Main) {
                 _asteroidsStatus.value = Status.Success(asteroidsResponse)
+                saveAsteroids(asteroidsResponse)
             }
+        }
+    }
+
+    private fun saveAsteroids(asteroidsResponse: List<Asteroid>) {
+        viewModelScope.launch(mainViewModelCoroutineContext) {
+            val asteroidsEntities = asteroidsResponse.map { AsteroidEntity.convert(it) }
+            repository.addAsteroids(asteroidsEntities)
         }
     }
 }
