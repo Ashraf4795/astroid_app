@@ -7,7 +7,6 @@ import dagger.Module
 
 @Module(includes = [DataSourceModule::class])
 abstract class RepositoryModule {
-
     @Binds
     abstract fun bindsAsteroidRepository(repository: AsteroidRepository): Repository
 }
