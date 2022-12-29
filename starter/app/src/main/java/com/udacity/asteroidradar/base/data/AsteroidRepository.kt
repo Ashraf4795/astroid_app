@@ -5,8 +5,9 @@ import com.udacity.asteroidradar.base.data.contract.RemoteDataSource
 import com.udacity.asteroidradar.base.data.contract.Repository
 import com.udacity.asteroidradar.base.data.model.Asteroid
 import com.udacity.asteroidradar.base.data.model.PictureOfDay
+import javax.inject.Inject
 
-class AsteroidRepository(
+class AsteroidRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : Repository {

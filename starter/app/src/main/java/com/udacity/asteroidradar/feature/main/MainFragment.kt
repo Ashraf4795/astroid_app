@@ -1,23 +1,25 @@
 package com.udacity.asteroidradar.feature.main
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.base.AsteroidApplication
 import com.udacity.asteroidradar.base.data.AsteroidRepository
 import com.udacity.asteroidradar.base.data.contract.Repository
 import com.udacity.asteroidradar.base.data.local.LocalDataSourceImpl
 import com.udacity.asteroidradar.base.data.remote.RemoteDataSourceImpl
 import com.udacity.asteroidradar.base.data.remote.retrofit.AsteroidApi
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import javax.inject.Inject
 
 class MainFragment : Fragment() {
 
-    private val repository: Repository by lazy {
-        AsteroidRepository(RemoteDataSourceImpl(AsteroidApi.getAsteroidService("jxSIXzY5eqrrlLR0vgAccFLYwiHknJVDAb6i7GmF")), LocalDataSourceImpl())
-    }
+    @Inject
+    lateinit var repository: Repository
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
@@ -35,6 +37,11 @@ class MainFragment : Fragment() {
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (context.applicationContext as AsteroidApplication).appComponent().inject(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -11,8 +11,9 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class RemoteDataSourceImpl(private val asteroidService: AsteroidService) : RemoteDataSource {
+class RemoteDataSourceImpl @Inject constructor(private val asteroidService: AsteroidService) : RemoteDataSource {
     override suspend fun getAsteroids(
         startData: String,
         endDate: String
