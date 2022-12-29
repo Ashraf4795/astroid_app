@@ -13,8 +13,7 @@ interface AsteroidService {
     @GET(ASTEROID_END_POINT)
     fun getAsteroids(
         @Query("start_date") startData: String,
-        @Query("end_date")   endDate: String,
-        @Query("api_key")    apiKey: String
+        @Query("end_date")   endDate: String
     ): Call<ResponseBody>
 
     @GET(PICTURE_OF_DAY_END_POINT)

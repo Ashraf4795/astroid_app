@@ -15,11 +15,10 @@ import retrofit2.Response
 class RemoteDataSourceImpl(private val asteroidService: AsteroidService) : RemoteDataSource {
     override suspend fun getAsteroids(
         startData: String,
-        endDate: String,
-        apiKey: String
+        endDate: String
     ): List<Asteroid> {
         return suspendCancellableCoroutine { continuation ->
-            asteroidService.getAsteroids(startData, endDate, apiKey).enqueue(object : Callback<ResponseBody> {
+            asteroidService.getAsteroids(startData, endDate).enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful) {
                         val apiResponseBody = response.body()

@@ -16,8 +16,9 @@ import com.udacity.asteroidradar.databinding.FragmentMainBinding
 class MainFragment : Fragment() {
 
     private val repository: Repository by lazy {
-        AsteroidRepository(RemoteDataSourceImpl(AsteroidApi.asteroid_api), LocalDataSourceImpl())
+        AsteroidRepository(RemoteDataSourceImpl(AsteroidApi.getAsteroidService("jxSIXzY5eqrrlLR0vgAccFLYwiHknJVDAb6i7GmF")), LocalDataSourceImpl())
     }
+
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
     }

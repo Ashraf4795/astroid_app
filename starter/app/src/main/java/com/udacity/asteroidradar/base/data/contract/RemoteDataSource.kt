@@ -8,6 +8,6 @@ import org.json.JSONObject
 import retrofit2.Call
 
 interface RemoteDataSource {
-    suspend fun getAsteroids(startData: String, endDate: String, apiKey: String): List<Asteroid>
+    suspend fun getAsteroids(startData: String, endDate: String): List<Asteroid>
     fun getPictureOfTheDay(apiKey: String): PictureOfDay
 }

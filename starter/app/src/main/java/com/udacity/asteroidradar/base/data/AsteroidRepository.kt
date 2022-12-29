@@ -11,8 +11,8 @@ class AsteroidRepository(
     private val localDataSource: LocalDataSource
 ) : Repository {
 
-    override suspend fun getAsteroidsRemote(startData: String, endDate: String, apiKey: String): List<Asteroid> {
-        return remoteDataSource.getAsteroids(startData, endDate, apiKey)
+    override suspend fun getAsteroidsRemote(startData: String, endDate: String): List<Asteroid> {
+        return remoteDataSource.getAsteroids(startData, endDate)
     }
 
     override suspend fun getPictureOfTheDayRemote(apiKey: String): PictureOfDay {

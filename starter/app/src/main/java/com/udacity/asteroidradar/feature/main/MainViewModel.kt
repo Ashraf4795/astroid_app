@@ -12,7 +12,7 @@ import kotlinx.coroutines.*
 
 class MainViewModel(
     private val repository: Repository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
     private val nextWeekDate = getNextSevenDaysFormattedDates()
 
@@ -29,8 +29,7 @@ class MainViewModel(
         viewModelScope.launch(mainViewModelCoroutineContext) {
             val asteroidsResponse = repository.getAsteroidsRemote(
                 nextWeekDate.first(),
-                nextWeekDate.last(),
-                "jxSIXzY5eqrrlLR0vgAccFLYwiHknJVDAb6i7GmF"
+                nextWeekDate.last()
             )
             withContext(Dispatchers.Main) {
                 _asteroidsStatus.value = Status.Success(asteroidsResponse)
