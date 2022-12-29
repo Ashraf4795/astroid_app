@@ -7,7 +7,7 @@ import com.udacity.asteroidradar.base.data.remote.RemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 
-@Module(includes = [NetworkModule::class])
+@Module(includes = [NetworkModule::class, DatabaseModule::class])
 abstract class DataSourceModule {
 
     @Binds
