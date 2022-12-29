@@ -8,11 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.base.AsteroidApplication
-import com.udacity.asteroidradar.base.data.AsteroidRepository
 import com.udacity.asteroidradar.base.data.contract.Repository
-import com.udacity.asteroidradar.base.data.local.LocalDataSourceImpl
-import com.udacity.asteroidradar.base.data.remote.RemoteDataSourceImpl
-import com.udacity.asteroidradar.base.data.remote.retrofit.AsteroidApi
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import javax.inject.Inject
 

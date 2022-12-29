@@ -1,4 +1,4 @@
-package com.udacity.asteroidradar.base.data
+package com.udacity.asteroidradar.base.data.repository
 
 import com.udacity.asteroidradar.base.data.contract.LocalDataSource
 import com.udacity.asteroidradar.base.data.contract.RemoteDataSource

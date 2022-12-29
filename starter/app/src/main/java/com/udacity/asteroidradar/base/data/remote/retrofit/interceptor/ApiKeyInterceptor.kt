@@ -5,7 +5,7 @@ import okhttp3.Response
 import javax.inject.Inject
 
 // interceptor for adding api_key query param for all requests to NASA api service.
-class TokenInterceptor(private val apiKey: String) : Interceptor {
+class ApiKeyInterceptor(private val apiKey: String) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val originalUrl = originalRequest.url()
