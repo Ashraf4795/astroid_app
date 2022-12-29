@@ -3,13 +3,14 @@ package com.udacity.asteroidradar.base.data.local
 import com.udacity.asteroidradar.base.data.contract.LocalDataSource
 import com.udacity.asteroidradar.base.data.model.Asteroid
 import com.udacity.asteroidradar.base.data.model.PictureOfDay
+import javax.inject.Inject
 
-class LocalDataSource: LocalDataSource {
+class LocalDataSourceImpl @Inject constructor (): LocalDataSource {
     override suspend fun getAsteroids(): List<Asteroid> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 
     override suspend fun getPictureOfTheDay(): PictureOfDay {
-        TODO("Not yet implemented")
+        return PictureOfDay("", "", "")
     }
 }
