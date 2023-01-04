@@ -15,7 +15,7 @@ class LocalDataSourceImpl @Inject constructor(
         return asteroidDao.getAsteroids()
     }
 
-    override suspend fun getPictureOfTheDay(): PictureOfDayEntity {
+    override suspend fun getPictureOfTheDay(): PictureOfDayEntity? {
         return asteroidDao.getPictureOfDay()
     }
 

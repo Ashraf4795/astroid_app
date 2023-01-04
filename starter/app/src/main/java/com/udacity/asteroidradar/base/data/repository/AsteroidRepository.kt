@@ -32,11 +32,27 @@ class AsteroidRepository @Inject constructor(
         return remoteDataSource.getAsteroids(startData, endDate)
     }
 
-    override suspend fun getPictureOfTheDayRemote(apiKey: String): PictureOfDay {
-        return remoteDataSource.getPictureOfTheDay(apiKey)
+    override suspend fun getPictureOfDay(): PictureOfDayEntity {
+        val localPicture = getPictureOfTheDayLocal()
+        if (localPicture != null) {
+            return localPicture
+        } else {
+            val remotePictureOfDay = getPictureOfTheDayRemote()
+            savePictureOfDay(remotePictureOfDay)
+            return PictureOfDayEntity.convert(remotePictureOfDay)
+        }
     }
 
-    override suspend fun getPictureOfTheDayLocal(): PictureOfDayEntity{
+    private suspend fun savePictureOfDay(remotePictureOfDay: PictureOfDay) {
+        val pictureOfDayEntity = PictureOfDayEntity.convert(pictureOfDay = remotePictureOfDay)
+        addPictureOfDay(pictureOfDayEntity)
+    }
+
+    override suspend fun getPictureOfTheDayRemote(): PictureOfDay {
+        return remoteDataSource.getPictureOfTheDay()
+    }
+
+    override suspend fun getPictureOfTheDayLocal(): PictureOfDayEntity?{
         return localDataSource.getPictureOfTheDay()
     }
 

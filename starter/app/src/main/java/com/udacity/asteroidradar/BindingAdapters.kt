@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import com.udacity.asteroidradar.base.utils.Status
 
 @BindingAdapter("statusIcon")
@@ -45,9 +46,19 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
 
 @BindingAdapter("visibilityState")
 fun bindProgressBarVisibility(progressBar: ProgressBar, status: Status) {
-    if(status is Status.Success<*>) {
+    if(status is Status.Loading) {
         progressBar.visibility = View.VISIBLE
     } else {
         progressBar.visibility = View.GONE
+    }
+}
+
+@BindingAdapter("image_url")
+fun bindPictureOfDay(imageView: ImageView, url: String?) {
+    if (!url.isNullOrBlank()) {
+        Glide.with(imageView)
+            .load(url)
+            .placeholder(R.drawable.placeholder_picture_of_day)
+            .into(imageView)
     }
 }

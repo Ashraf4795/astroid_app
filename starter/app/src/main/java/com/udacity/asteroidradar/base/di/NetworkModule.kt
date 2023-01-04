@@ -29,8 +29,6 @@ class NetworkModule {
     @Singleton
     fun provideOkHttpClient(interceptor: ApiKeyInterceptor): OkHttpClient {
         val clientBuilder = OkHttpClient.Builder().apply {
-            callTimeout(15, TimeUnit.SECONDS)
-            readTimeout(15, TimeUnit.SECONDS)
             if (!interceptors().contains(interceptor)) {
                 addInterceptor(interceptor)
             }

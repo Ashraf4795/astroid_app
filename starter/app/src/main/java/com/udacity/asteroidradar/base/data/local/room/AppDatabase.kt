@@ -6,7 +6,7 @@ import com.udacity.asteroidradar.base.data.local.room.dao.AsteroidDao
 import com.udacity.asteroidradar.base.data.local.room.entity.AsteroidEntity
 import com.udacity.asteroidradar.base.data.local.room.entity.PictureOfDayEntity
 
-@Database(entities = [AsteroidEntity::class, PictureOfDayEntity::class], version = 1, exportSchema = false)
+@Database(entities = [AsteroidEntity::class, PictureOfDayEntity::class], version = 2, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun asteroidDao(): AsteroidDao

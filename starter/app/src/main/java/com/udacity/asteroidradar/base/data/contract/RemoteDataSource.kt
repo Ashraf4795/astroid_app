@@ -9,5 +9,5 @@ import retrofit2.Call
 
 interface RemoteDataSource {
     suspend fun getAsteroids(startData: String, endDate: String): List<Asteroid>
-    fun getPictureOfTheDay(apiKey: String): PictureOfDay
+    suspend fun getPictureOfTheDay(): PictureOfDay
 }

@@ -37,7 +37,7 @@ class RemoteDataSourceImpl @Inject constructor(private val asteroidService: Aste
         }
     }
 
-    override fun getPictureOfTheDay(apiKey: String): PictureOfDay {
-        return asteroidService.getPictureOfTheDay(apiKey)
+    override suspend fun getPictureOfTheDay(): PictureOfDay {
+        return asteroidService.getPictureOfTheDay()
     }
 }

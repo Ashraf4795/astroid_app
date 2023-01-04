@@ -11,8 +11,11 @@ import retrofit2.Call
 interface Repository {
     suspend fun getAsteroids(startData: String, endDate: String): List<Asteroid>
     suspend fun getAsteroidsRemote(startData: String, endDate: String): List<Asteroid>
-    suspend fun getPictureOfTheDayRemote(apiKey: String): PictureOfDay
-    suspend fun getPictureOfTheDayLocal(): PictureOfDayEntity
+
+    suspend fun getPictureOfDay(): PictureOfDayEntity
+
+    suspend fun getPictureOfTheDayRemote(): PictureOfDay
+    suspend fun getPictureOfTheDayLocal(): PictureOfDayEntity?
 
     suspend fun addAsteroids(asteroids: List<AsteroidEntity>)
     suspend fun addPictureOfDay(pictureOfDayEntity: PictureOfDayEntity)
