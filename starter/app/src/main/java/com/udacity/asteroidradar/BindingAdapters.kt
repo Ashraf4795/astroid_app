@@ -6,6 +6,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.udacity.asteroidradar.base.data.model.Asteroid
 import com.udacity.asteroidradar.base.utils.Status
 
 @BindingAdapter("statusIcon")

@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.base.AsteroidApplication
 import com.udacity.asteroidradar.base.data.contract.Repository
@@ -22,7 +24,11 @@ class MainFragment : Fragment() {
     lateinit var repository: Repository
     private lateinit var binding: FragmentMainBinding
     private lateinit var asteroidsAdapter: AsteroidAdapter
+    private lateinit var navController: NavController
 
+    private val onAsteroidItemClicked = { asteroid:Asteroid ->
+        navController.navigate(MainFragmentDirections.actionShowDetail(asteroid))
+    }
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
     }
@@ -31,6 +37,9 @@ class MainFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
+
+        navController = findNavController()
+
         viewModel.asteroidsStatus.observe(this.viewLifecycleOwner) {
             handleAsteroidRequestStatus(it)
         }
@@ -54,7 +63,7 @@ class MainFragment : Fragment() {
     }
 
     private fun initAsteroidsList(data: List<Asteroid>?) {
-        asteroidsAdapter = AsteroidAdapter(data ?: emptyList())
+        asteroidsAdapter = AsteroidAdapter(data ?: emptyList(), onAsteroidItemClicked)
         binding.asteroidRecycler.adapter = asteroidsAdapter
     }
 
@@ -69,6 +78,15 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.show_week_asteroids -> {
+                asteroidsAdapter.onShowWeekAsteroidsClicked()
+            }
+            R.id.show_today_asteroids -> {
+                asteroidsAdapter.onShowTodayAsteroidClicked()
+            }
+        }
         return true
     }
+
 }

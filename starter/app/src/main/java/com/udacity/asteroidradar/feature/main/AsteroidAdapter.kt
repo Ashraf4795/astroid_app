@@ -6,14 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.base.data.model.Asteroid
+import com.udacity.asteroidradar.base.utils.getTodayDate
 import com.udacity.asteroidradar.databinding.AsteroidItemLayoutBinding
 
-class AsteroidAdapter(private val asteroids: List<Asteroid>): RecyclerView.Adapter<AsteroidAdapter.AsteroidViewHolder>() {
+class AsteroidAdapter(private val asteroids: List<Asteroid>, val onAsteroidItemClicked: (Asteroid)-> Unit): RecyclerView.Adapter<AsteroidAdapter.AsteroidViewHolder>() {
     private lateinit var binding: AsteroidItemLayoutBinding
+    private val mutableAsteroidList: MutableList<Asteroid> = asteroids.toMutableList()
 
     inner class AsteroidViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        fun bind(asteroid: Asteroid) {
+        fun bind(asteroid: Asteroid, onAsteroidItemClicked: (Asteroid) -> Unit) {
             binding.asteroid = asteroid
+            binding.root.setOnClickListener {
+                onAsteroidItemClicked.invoke(asteroid)
+            }
         }
     }
 
@@ -23,8 +28,21 @@ class AsteroidAdapter(private val asteroids: List<Asteroid>): RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
-        holder.bind(asteroids[position])
+        holder.bind(mutableAsteroidList[position], onAsteroidItemClicked)
     }
 
-    override fun getItemCount()= asteroids.size
+    fun onShowWeekAsteroidsClicked() {
+        mutableAsteroidList.clear()
+        mutableAsteroidList.addAll(asteroids)
+        notifyDataSetChanged()
+    }
+
+    fun onShowTodayAsteroidClicked() {
+        val todayDate = getTodayDate()
+        mutableAsteroidList.clear()
+        mutableAsteroidList.addAll(asteroids.filter { it.closeApproachDate == todayDate })
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount()= mutableAsteroidList.size
 }
