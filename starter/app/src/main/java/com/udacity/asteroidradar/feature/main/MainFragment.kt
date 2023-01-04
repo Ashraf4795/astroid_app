@@ -63,7 +63,10 @@ class MainFragment : Fragment() {
     }
 
     private fun initAsteroidsList(data: List<Asteroid>?) {
-        asteroidsAdapter = AsteroidAdapter(data ?: emptyList(), onAsteroidItemClicked)
+        asteroidsAdapter = AsteroidAdapter(data ?: emptyList(), onAsteroidItemClicked).also { adapter ->
+            adapter.submitList(data)
+        }
+
         binding.asteroidRecycler.adapter = asteroidsAdapter
     }
 

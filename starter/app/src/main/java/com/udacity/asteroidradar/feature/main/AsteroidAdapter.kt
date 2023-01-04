@@ -3,15 +3,16 @@ package com.udacity.asteroidradar.feature.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.base.data.model.Asteroid
 import com.udacity.asteroidradar.base.utils.getTodayDate
 import com.udacity.asteroidradar.databinding.AsteroidItemLayoutBinding
 
-class AsteroidAdapter(private val asteroids: List<Asteroid>, val onAsteroidItemClicked: (Asteroid)-> Unit): RecyclerView.Adapter<AsteroidAdapter.AsteroidViewHolder>() {
+class AsteroidAdapter(private val data: List<Asteroid>, val onAsteroidItemClicked: (Asteroid)-> Unit): ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>(DiffUitlCallBack()) {
     private lateinit var binding: AsteroidItemLayoutBinding
-    private val mutableAsteroidList: MutableList<Asteroid> = asteroids.toMutableList()
+    private val mutableAsteroidList: MutableList<Asteroid> = mutableListOf()
 
     inner class AsteroidViewHolder(view: View): RecyclerView.ViewHolder(view) {
         fun bind(asteroid: Asteroid, onAsteroidItemClicked: (Asteroid) -> Unit) {
@@ -28,21 +29,28 @@ class AsteroidAdapter(private val asteroids: List<Asteroid>, val onAsteroidItemC
     }
 
     override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
-        holder.bind(mutableAsteroidList[position], onAsteroidItemClicked)
+        holder.bind(getItem(position), onAsteroidItemClicked)
     }
 
     fun onShowWeekAsteroidsClicked() {
-        mutableAsteroidList.clear()
-        mutableAsteroidList.addAll(asteroids)
-        notifyDataSetChanged()
+        submitList(data)
     }
 
     fun onShowTodayAsteroidClicked() {
         val todayDate = getTodayDate()
         mutableAsteroidList.clear()
-        mutableAsteroidList.addAll(asteroids.filter { it.closeApproachDate == todayDate })
-        notifyDataSetChanged()
+        mutableAsteroidList.addAll(data.filter { it.closeApproachDate == todayDate })
+        submitList(mutableAsteroidList)
+    }
+}
+
+
+class DiffUitlCallBack: DiffUtil.ItemCallback<Asteroid>() {
+    override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun getItemCount()= mutableAsteroidList.size
+    override fun areContentsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
+        return oldItem == newItem
+    }
 }
