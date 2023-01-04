@@ -20,7 +20,7 @@ interface AsteroidDao {
     suspend fun insertPictureOfDay(picture: PictureOfDayEntity)
 
     @Query("SELECT * FROM picture_of_day_table")
-    suspend fun getPictureOfDay(): PictureOfDayEntity
+    suspend fun getPictureOfDay(): PictureOfDayEntity?
 
     @Query("DELETE FROM picture_of_day_table")
     suspend fun deletePictureOfDay()

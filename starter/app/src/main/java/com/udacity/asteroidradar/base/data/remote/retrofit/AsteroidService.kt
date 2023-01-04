@@ -17,5 +17,5 @@ interface AsteroidService {
     ): Call<ResponseBody>
 
     @GET(PICTURE_OF_DAY_END_POINT)
-    fun getPictureOfTheDay(@Query("api_key") apiKey: String): PictureOfDay
+    suspend fun getPictureOfTheDay(): PictureOfDay
 }

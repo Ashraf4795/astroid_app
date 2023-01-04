@@ -18,7 +18,7 @@ class DatabaseModule {
             context.applicationContext,
             AppDatabase::class.java,
             "ASTEROID_RADAR_DATABASE"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides
