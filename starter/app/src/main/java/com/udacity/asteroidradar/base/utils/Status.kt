@@ -1,8 +1,8 @@
 package com.udacity.asteroidradar.base.utils
 
-sealed class Status <T> {
+sealed class Status {
 
-    data class Success<T>(private val data: T?) : Status<T>()
-    data class Failure<T>(private val exception: Throwable?, private val errorMessage: String = "error") : Status<T>()
-    object Loading : Status<Nothing>()
+    data class Success<T>(private val data: T?) : Status()
+    data class Failure(private val exception: Throwable?, private val errorMessage: String = "error") : Status()
+    object Loading : Status()
 }

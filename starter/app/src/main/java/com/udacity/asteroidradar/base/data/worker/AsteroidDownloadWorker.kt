@@ -5,13 +5,17 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.udacity.asteroidradar.base.data.contract.Repository
+import com.udacity.asteroidradar.base.data.local.room.entity.AsteroidEntity
 import com.udacity.asteroidradar.base.di.DaggerAppComponent
+import com.udacity.asteroidradar.base.utils.getNextSevenDaysFormattedDates
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
 class AsteroidDownloadWorker(context: Context, workerParameters: WorkerParameters): CoroutineWorker(context, workerParameters) {
+
+    private val nextWeekDate = getNextSevenDaysFormattedDates()
 
     companion object {
         const val WORKER_NAME = "AsteroidDownloadWorker"
@@ -26,9 +30,10 @@ class AsteroidDownloadWorker(context: Context, workerParameters: WorkerParameter
 
     override suspend fun doWork()= withContext(Dispatchers.IO) {
        try {
-            //val asteroids = repository.getAsteroidsLocal()
-            Log.d("worker", "asteroids.toString()")
-            Result.success()
+           val remoteAsteroids = repository.getAsteroidsRemote(nextWeekDate.first(), nextWeekDate.last())
+           repository.addAsteroids(remoteAsteroids.map { AsteroidEntity.convert(it) })
+
+           Result.success()
         } catch (exception: Exception) {
             Result.failure()
         }

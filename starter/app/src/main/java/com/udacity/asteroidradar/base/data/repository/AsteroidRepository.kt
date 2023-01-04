@@ -14,16 +14,26 @@ class AsteroidRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) : Repository {
 
+    /*
+    check for local cached asteroids data, if not exists, fetch from server and cache for next usage.
+     */
+    override suspend fun getAsteroids(startData: String, endDate: String): List<Asteroid> {
+        val localAsteroids = localDataSource.getAsteroids()
+        if (localAsteroids.isNotEmpty()) {
+            return localAsteroids.map { Asteroid.convert(it)}
+        } else {
+            val remoteAsteroids = remoteDataSource.getAsteroids(startData, endDate)
+            saveAsteroids(remoteAsteroids)
+            return remoteAsteroids
+        }
+    }
+
     override suspend fun getAsteroidsRemote(startData: String, endDate: String): List<Asteroid> {
         return remoteDataSource.getAsteroids(startData, endDate)
     }
 
     override suspend fun getPictureOfTheDayRemote(apiKey: String): PictureOfDay {
         return remoteDataSource.getPictureOfTheDay(apiKey)
-    }
-
-    override suspend fun getAsteroidsLocal(): List<AsteroidEntity> {
-        return localDataSource.getAsteroids()
     }
 
     override suspend fun getPictureOfTheDayLocal(): PictureOfDayEntity{
@@ -44,6 +54,11 @@ class AsteroidRepository @Inject constructor(
 
     override suspend fun deletePictureOfDay() {
         localDataSource.deletePictureOfDay()
+    }
+
+    private suspend fun saveAsteroids(asteroidsResponse: List<Asteroid>) {
+        val asteroidsEntities = asteroidsResponse.map { AsteroidEntity.convert(it) }
+        addAsteroids(asteroidsEntities)
     }
 
 }
