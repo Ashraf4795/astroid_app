@@ -16,12 +16,12 @@ class AsteroidApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
-        // delayedInit()
+        delayedInit()
     }
 
     private fun delayedInit() {
         applicationScope.launch {
-            AsteroidWorkerInitializer.initialize(this@AsteroidApplication)
+            AsteroidWorkerInitializer.initialize(this@AsteroidApplication.applicationContext)
         }
     }
 
