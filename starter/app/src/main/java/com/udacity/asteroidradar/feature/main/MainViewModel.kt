@@ -21,7 +21,7 @@ class MainViewModel(
     val asteroidsStatus: LiveData<Status<List<Asteroid>>> = _asteroidsStatus
 
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-        _asteroidsStatus.value = Status.Failure(throwable)
+        _asteroidsStatus.postValue(Status.Failure(throwable))
     }
 
     private val mainViewModelCoroutineContext = exceptionHandler + dispatcher
