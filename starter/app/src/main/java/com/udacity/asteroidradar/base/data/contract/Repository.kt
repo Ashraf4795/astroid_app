@@ -9,8 +9,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 
 interface Repository {
+    suspend fun getAsteroids(startData: String, endDate: String): List<Asteroid>
     suspend fun getAsteroidsRemote(startData: String, endDate: String): List<Asteroid>
-    suspend fun getAsteroidsLocal(): List<AsteroidEntity>
     suspend fun getPictureOfTheDayRemote(apiKey: String): PictureOfDay
     suspend fun getPictureOfTheDayLocal(): PictureOfDayEntity
 

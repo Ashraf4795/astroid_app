@@ -9,6 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.base.AsteroidApplication
 import com.udacity.asteroidradar.base.data.contract.Repository
+import com.udacity.asteroidradar.base.utils.Status
+import com.udacity.asteroidradar.base.utils.Status.Loading
+import com.udacity.asteroidradar.base.utils.Status.Success
+import com.udacity.asteroidradar.base.utils.Status.Failure
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import javax.inject.Inject
 
@@ -16,6 +20,7 @@ class MainFragment : Fragment() {
 
     @Inject
     lateinit var repository: Repository
+    private lateinit var binding: FragmentMainBinding
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
@@ -23,16 +28,28 @@ class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        val binding = FragmentMainBinding.inflate(inflater)
+        binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
         viewModel.asteroidsStatus.observe(this.viewLifecycleOwner) {
-            Log.d("main", it.toString())
+            handleAsteroidRequestStatus(it)
         }
         binding.viewModel = viewModel
 
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    private fun handleAsteroidRequestStatus(status: Status) {
+        when (status) {
+            is Success<*> -> {
+
+            }
+            is Failure -> {
+
+            }
+            else -> {}
+        }
     }
 
     override fun onAttach(context: Context) {

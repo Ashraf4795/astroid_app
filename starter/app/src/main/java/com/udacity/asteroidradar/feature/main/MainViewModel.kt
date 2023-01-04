@@ -10,6 +10,7 @@ import com.udacity.asteroidradar.base.data.model.Asteroid
 import com.udacity.asteroidradar.base.utils.Status
 import com.udacity.asteroidradar.base.utils.getNextSevenDaysFormattedDates
 import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 class MainViewModel(
     private val repository: Repository,
@@ -17,8 +18,8 @@ class MainViewModel(
 ) : ViewModel() {
     private val nextWeekDate = getNextSevenDaysFormattedDates()
 
-    private val _asteroidsStatus = MutableLiveData<Status<List<Asteroid>>>()
-    val asteroidsStatus: LiveData<Status<List<Asteroid>>> = _asteroidsStatus
+    private val _asteroidsStatus = MutableLiveData<Status>()
+    val asteroidsStatus: LiveData<Status> = _asteroidsStatus
 
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         _asteroidsStatus.postValue(Status.Failure(throwable))
@@ -27,22 +28,33 @@ class MainViewModel(
     private val mainViewModelCoroutineContext = exceptionHandler + dispatcher
 
     init {
-        viewModelScope.launch(mainViewModelCoroutineContext) {
-            val asteroidsResponse = repository.getAsteroidsRemote(
-                nextWeekDate.first(),
-                nextWeekDate.last()
-            )
-            withContext(Dispatchers.Main) {
+        getAsteroids()
+    }
+
+    private fun getAsteroids() {
+        viewModelScope.launch {
+            try {
+                _asteroidsStatus.value = Status.Loading
+                val asteroidsResponse = withContext(mainViewModelCoroutineContext) {
+                    repository.getAsteroids(
+                        nextWeekDate.first(),
+                        nextWeekDate.last()
+                    )
+                }
                 _asteroidsStatus.value = Status.Success(asteroidsResponse)
-                saveAsteroids(asteroidsResponse)
+
+            } catch (exception: Exception) {
+                _asteroidsStatus.value = Status.Failure(exception)
             }
         }
     }
 
-    private fun saveAsteroids(asteroidsResponse: List<Asteroid>) {
-        viewModelScope.launch(mainViewModelCoroutineContext) {
-            val asteroidsEntities = asteroidsResponse.map { AsteroidEntity.convert(it) }
-            repository.addAsteroids(asteroidsEntities)
+    private fun launch(
+        context: CoroutineContext = mainViewModelCoroutineContext,
+        block: suspend () -> Unit
+    ) {
+        viewModelScope.launch(context) {
+            block.invoke()
         }
     }
 }
