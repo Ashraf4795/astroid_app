@@ -1,16 +1,13 @@
 package com.udacity.asteroidradar.base
 
 import android.app.Application
-import android.os.Build
-import androidx.work.*
-import com.udacity.asteroidradar.base.data.worker.AsteroidDownloadWorker
+import com.udacity.asteroidradar.base.data.worker.AsteroidWorkerInitializer
 import com.udacity.asteroidradar.base.di.AppComponent
 import com.udacity.asteroidradar.base.di.AppModule
 import com.udacity.asteroidradar.base.di.DaggerAppComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 class AsteroidApplication: Application() {
     private lateinit var appComponent: AppComponent
@@ -19,31 +16,12 @@ class AsteroidApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
-        //delayedInit()
+        // delayedInit()
     }
 
     private fun delayedInit() {
         applicationScope.launch {
-            val constrains = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.UNMETERED)
-                .setRequiresBatteryNotLow(true)
-                .apply {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        setRequiresDeviceIdle(true)
-                    }
-                }
-                .build()
-
-            val asteroidsRefreshRequest = PeriodicWorkRequestBuilder<AsteroidDownloadWorker>(
-                1,
-                TimeUnit.DAYS,
-            ).setConstraints(constrains).build()
-
-            WorkManager.getInstance(this@AsteroidApplication).enqueueUniquePeriodicWork(
-                AsteroidDownloadWorker.WORKER_NAME,
-                ExistingPeriodicWorkPolicy.KEEP,
-                asteroidsRefreshRequest
-            )
+            AsteroidWorkerInitializer.initialize(this@AsteroidApplication)
         }
     }
 
