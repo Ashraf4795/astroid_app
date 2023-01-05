@@ -1,9 +1,7 @@
-# Purpose of this Folder
+# How to run the project
 
-This folder should contain the scaffolded project files to get a student started on their project. This repo will be added to the Classroom for students to use, so please do not have any solutions in this folder.
-
-## Note: Android Kotlin Gradle Update
-Use the updated Gradle version in the `~/gradle/wrapper/gradle-wrapper.properties` file:
-```
-distributionUrl = https\://services.gradle.org/distributions/gradle-6.1.1-all.zip
-```
+To not breaks the Terms of Service of NASA's API privacy, The api key is not included in the project files, 
+so to run the app successfully please do the follow:
+1- navigate to gradle.properties.
+2- add the following line API_KEY="your api key value here"
+3- rebuild the project and run.
