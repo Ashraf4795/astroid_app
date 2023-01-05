@@ -17,7 +17,7 @@ object AsteroidWorkerInitializer {
         1, TimeUnit.DAYS,
     ).apply {
         addTag("sync_asteroid_worker_tag")
-        setInitialDelay(10, TimeUnit.MINUTES).setConstraints(constrains)
+        setInitialDelay(15, TimeUnit.MINUTES).setConstraints(constrains)
     }.build()
 
     fun initialize(context: Context) {
