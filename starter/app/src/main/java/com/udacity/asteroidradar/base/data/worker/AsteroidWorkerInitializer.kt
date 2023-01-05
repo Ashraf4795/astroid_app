@@ -10,7 +10,7 @@ object AsteroidWorkerInitializer {
     private lateinit var workManager: WorkManager
     private val constrains = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.UNMETERED)
-        .setRequiresBatteryNotLow(true)
+        .setRequiresCharging(true)
         .build()
 
     private val asteroidsRefreshRequest = PeriodicWorkRequestBuilder<AsteroidDownloadWorker>(
