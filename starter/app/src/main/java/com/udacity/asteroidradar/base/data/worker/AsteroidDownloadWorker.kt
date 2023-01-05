@@ -28,14 +28,14 @@ class AsteroidDownloadWorker(context: Context, workerParameters: WorkerParameter
     @Inject
     lateinit var repository: Repository
 
-    override suspend fun doWork()= withContext(Dispatchers.IO) {
-       try {
+    override suspend fun doWork():Result {
+       return try {
            val remoteAsteroids = repository.getAsteroidsRemote(nextWeekDate.first(), nextWeekDate.last())
            repository.addAsteroids(remoteAsteroids.map { AsteroidEntity.convert(it) })
 
            Result.success()
         } catch (exception: Exception) {
-            Result.failure()
+            Result.retry()
         }
     }
 
