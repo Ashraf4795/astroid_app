@@ -12,6 +12,17 @@ data class Asteroid(
     val isPotentiallyHazardous: Boolean
 ) : Parcelable {
 
+    fun contentDescriptionForHazardous(isPotentiallyHazardous: Boolean): String {
+        return if (isPotentiallyHazardous) {
+            "and it's potential to be a hazardous asteroid"
+        } else {
+            "it's not a hazardous asteroid, thank god"
+        }
+    }
+    val contentDescription = """$codename, and the close approach date is $closeApproachDate, with estimated diameter $estimatedDiameter,
+        |this asteroid far from earth by $distanceFromEarth, ${contentDescriptionForHazardous(isPotentiallyHazardous)}
+    """.trimMargin()
+
     companion object {
         fun convert(asteroidEntity: AsteroidEntity): Asteroid {
             return Asteroid (

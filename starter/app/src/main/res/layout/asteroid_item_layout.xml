@@ -20,6 +20,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:onClick="@{() -> clickListener.onClick(asteroid)}"
+        app:talk_back="@{String.format(@string/asteroid_item_description, asteroid.contentDescription)}"
         tools:background="#000">
 
         <TextView

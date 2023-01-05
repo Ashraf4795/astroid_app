@@ -27,4 +27,5 @@
     <string name="relative_velocity_description">Relative velocity of asteroid is %s</string>
     <string name="distance_from_earth_description">Distance between asteroid and earth is %s</string>
     <string name="absolute_magnitude_help">help icon to show description of absolute magnitude unit of messure</string>
+    <string name="asteroid_item_description">Asteroid %s</string>
 </resources>
