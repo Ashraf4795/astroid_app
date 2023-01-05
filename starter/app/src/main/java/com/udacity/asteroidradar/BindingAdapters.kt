@@ -72,3 +72,8 @@ fun detailsImageTalkBack(imageView: ImageView, isHazardous: Boolean) {
         imageView.contentDescription = imageView.context.resources.getString(R.string.talkback_not_hazardous)
     }
 }
+
+@BindingAdapter("talk_back")
+fun talkback(view: View, contentDescription: String) {
+    view.contentDescription = contentDescription
+}

@@ -19,12 +19,12 @@
     <string name="not_hazardous_asteroid_image">Not hazardous asteroid image</string>
     <string name="this_is_nasa_s_picture_of_day_showing_nothing_yet">This is NASA\'s picture of day, showing nothing yet</string>
     <string name="nasa_picture_of_day_content_description_format">NASA\'s picture of day: %s</string>
-    <string name="talkback_hazardous">Image representing potential hazardous asteroid</string>
-    <string name="talkback_not_hazardous">Image representing a hazardous asateroid</string>
-    <string name="close_approach_description">close approach date is</string>
-    <string name="absolute_magnitude_description">Absolute magnitude value</string>
-    <string name="estimated_diameter_description">Estimated diameter of asteroid</string>
-    <string name="relative_velocity_description">Relative velocity of asteroid</string>
-    <string name="distance_from_earth_description">Distance between asteroid and earth</string>
+    <string name="talkback_hazardous">Image representing a Potential hazardous asteroid</string>
+    <string name="talkback_not_hazardous">Image representing NOT a hazardous asteroid</string>
+    <string name="close_approach_description">close approach date is %s</string>
+    <string name="absolute_magnitude_description">Absolute magnitude value is %s</string>
+    <string name="estimated_diameter_description">Estimated diameter of asteroid is %s</string>
+    <string name="relative_velocity_description">Relative velocity of asteroid is %s</string>
+    <string name="distance_from_earth_description">Distance between asteroid and earth is %s</string>
     <string name="absolute_magnitude_help">help icon to show description of absolute magnitude unit of messure</string>
 </resources>

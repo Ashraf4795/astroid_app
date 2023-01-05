@@ -62,7 +62,7 @@
                         android:text="@{asteroid.closeApproachDate}"
                         android:textColor="@color/app_grey"
                         android:textSize="14sp"
-                        android:contentDescription="@string/close_approach_description"
+                        app:talk_back="@{String.format(@string/close_approach_description, asteroid.closeApproachDate)}"
                         tools:text="2020-02-01" />
                 </LinearLayout>
 
@@ -95,7 +95,7 @@
                             android:layout_marginTop="4dp"
                             android:textColor="@color/app_grey"
                             android:textSize="14sp"
-                            android:contentDescription="@string/absolute_magnitude_description"
+                            app:talk_back="@{String.format(@string/absolute_magnitude_description, asteroid.absoluteMagnitude)}"
                             app:astronomicalUnitText="@{asteroid.absoluteMagnitude}"
                             tools:text="25.126 au" />
                     </LinearLayout>
@@ -127,7 +127,7 @@
                     android:layout_marginTop="4dp"
                     android:textColor="@color/app_grey"
                     android:textSize="14sp"
-                    android:contentDescription="@string/estimated_diameter_description"
+                    app:talk_back="@{String.format(@string/estimated_diameter_description, asteroid.estimatedDiameter)}"
                     app:kmUnitText="@{asteroid.estimatedDiameter}"
                     tools:text="0.82 km" />
 
@@ -148,7 +148,7 @@
                     android:layout_marginTop="4dp"
                     android:textColor="@color/app_grey"
                     android:textSize="14sp"
-                    android:contentDescription="@string/relative_velocity_description"
+                    app:talk_back="@{String.format(@string/relative_velocity_description, asteroid.relativeVelocity)}"
                     app:velocityText="@{asteroid.relativeVelocity}"
                     tools:text="11.9 km/s" />
 
@@ -169,7 +169,7 @@
                     android:layout_marginTop="4dp"
                     android:textColor="@color/app_grey"
                     android:textSize="14sp"
-                    android:contentDescription="@string/distance_from_earth_description"
+                    app:talk_back="@{String.format(@string/distance_from_earth_description, asteroid.distanceFromEarth)}"
                     app:astronomicalUnitText="@{asteroid.distanceFromEarth}"
                     tools:text="0.0924 au" />
 
