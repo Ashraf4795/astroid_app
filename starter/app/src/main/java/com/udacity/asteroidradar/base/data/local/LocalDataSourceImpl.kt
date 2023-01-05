@@ -34,4 +34,12 @@ class LocalDataSourceImpl @Inject constructor(
     override suspend fun deletePictureOfDay() {
         asteroidDao.deletePictureOfDay()
     }
+
+    override suspend fun clear() {
+        asteroidDao.clear()
+    }
+
+    override suspend fun deleteAsteroidByDate(date: String) {
+        asteroidDao.deleteAsteroidByDate(date)
+    }
 }

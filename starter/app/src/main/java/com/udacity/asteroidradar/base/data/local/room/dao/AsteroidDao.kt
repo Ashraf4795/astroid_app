@@ -24,4 +24,10 @@ interface AsteroidDao {
 
     @Query("DELETE FROM picture_of_day_table")
     suspend fun deletePictureOfDay()
+
+    @Query("DELETE FROM asteroid_table")
+    suspend fun clear()
+
+    @Query("DELETE FROM asteroid_table where close_approach_date=:date")
+    suspend fun deleteAsteroidByDate(date: String)
 }

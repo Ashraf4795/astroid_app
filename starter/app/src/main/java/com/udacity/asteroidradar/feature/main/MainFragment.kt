@@ -80,7 +80,6 @@ class MainFragment : Fragment() {
 
     private fun initAsteroidsList(data: List<Asteroid>?) {
         asteroidsAdapter = AsteroidAdapter(data ?: emptyList(), onAsteroidItemClicked)
-        asteroidsAdapter.submitList(data)
         binding.asteroidRecycler.adapter = asteroidsAdapter
     }
 

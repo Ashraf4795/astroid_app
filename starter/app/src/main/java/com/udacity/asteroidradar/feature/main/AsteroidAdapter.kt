@@ -10,9 +10,9 @@ import com.udacity.asteroidradar.base.data.model.Asteroid
 import com.udacity.asteroidradar.base.utils.getTodayDate
 import com.udacity.asteroidradar.databinding.AsteroidItemLayoutBinding
 
-class AsteroidAdapter(private val data: List<Asteroid>, val onAsteroidItemClicked: OnAsteroidItemClicked): ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>(DiffUitlCallBack()) {
+class AsteroidAdapter(private val data: List<Asteroid>, val onAsteroidItemClicked: OnAsteroidItemClicked): RecyclerView.Adapter<AsteroidAdapter.AsteroidViewHolder>() {
     private lateinit var binding: AsteroidItemLayoutBinding
-    private val mutableAsteroidList: MutableList<Asteroid> = mutableListOf()
+    private val mutableAsteroidList: MutableList<Asteroid> = data.toMutableList()
 
     inner class AsteroidViewHolder(view: View): RecyclerView.ViewHolder(view) {
         fun bind(asteroid: Asteroid, onAsteroidItemClicked: OnAsteroidItemClicked) {
@@ -28,28 +28,40 @@ class AsteroidAdapter(private val data: List<Asteroid>, val onAsteroidItemClicke
     }
 
     override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
-        holder.bind(getItem(position), onAsteroidItemClicked)
+        holder.bind(mutableAsteroidList.get(position), onAsteroidItemClicked)
     }
 
     fun onShowWeekAsteroidsClicked() {
-        submitList(data)
+        mutableAsteroidList.clear()
+        mutableAsteroidList.addAll(data)
+        notifyDataSetChanged()
     }
 
     fun onShowTodayAsteroidClicked() {
         val todayDate = getTodayDate()
         mutableAsteroidList.clear()
         mutableAsteroidList.addAll(data.filter { it.closeApproachDate == todayDate })
-        submitList(mutableAsteroidList)
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount() = mutableAsteroidList.size
+
+    override fun getItemId(position: Int): Long {
+        return mutableAsteroidList.get(position).id
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 }
 
-
-class DiffUitlCallBack: DiffUtil.ItemCallback<Asteroid>() {
-    override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
-        return oldItem == newItem
-    }
-}
+//
+//class DiffUitlCallBack: DiffUtil.ItemCallback<Asteroid>() {
+//    override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
+//        return oldItem.id == newItem.id
+//    }
+//
+//    override fun areContentsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
+//        return oldItem == newItem
+//    }
+//}

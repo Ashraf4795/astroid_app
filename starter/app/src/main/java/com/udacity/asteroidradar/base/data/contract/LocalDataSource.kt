@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.base.data.contract
 
+import androidx.room.Query
 import com.udacity.asteroidradar.base.data.local.room.entity.AsteroidEntity
 import com.udacity.asteroidradar.base.data.local.room.entity.PictureOfDayEntity
 
@@ -12,4 +13,7 @@ interface LocalDataSource {
 
     suspend fun deleteAsteroid(asteroidEntity: AsteroidEntity)
     suspend fun deletePictureOfDay()
+
+    suspend fun clear()
+    suspend fun deleteAsteroidByDate(date: String)
 }

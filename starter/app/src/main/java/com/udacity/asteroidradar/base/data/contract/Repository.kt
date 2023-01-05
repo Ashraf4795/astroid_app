@@ -22,4 +22,8 @@ interface Repository {
 
     suspend fun deleteAsteroid(asteroidEntity: AsteroidEntity)
     suspend fun deletePictureOfDay()
+    suspend fun refreshAsteroidApiContent(
+        remoteAsteroids: List<Asteroid>,
+        remotePictureOfDay: PictureOfDay
+    )
 }

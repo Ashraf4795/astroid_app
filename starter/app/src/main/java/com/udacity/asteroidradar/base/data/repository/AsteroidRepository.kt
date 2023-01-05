@@ -7,6 +7,8 @@ import com.udacity.asteroidradar.base.data.local.room.entity.AsteroidEntity
 import com.udacity.asteroidradar.base.data.local.room.entity.PictureOfDayEntity
 import com.udacity.asteroidradar.base.data.model.Asteroid
 import com.udacity.asteroidradar.base.data.model.PictureOfDay
+import com.udacity.asteroidradar.base.utils.getTodayDate
+import com.udacity.asteroidradar.base.utils.getYesterdayDate
 import javax.inject.Inject
 
 class AsteroidRepository @Inject constructor(
@@ -20,7 +22,7 @@ class AsteroidRepository @Inject constructor(
     override suspend fun getAsteroids(startData: String, endDate: String): List<Asteroid> {
         val localAsteroids = localDataSource.getAsteroids()
         if (localAsteroids.isNotEmpty()) {
-            return localAsteroids.map { Asteroid.convert(it)}
+            return localAsteroids.map { Asteroid.convert(it)}.filter { it.closeApproachDate != getYesterdayDate() }
         } else {
             val remoteAsteroids = remoteDataSource.getAsteroids(startData, endDate)
             saveAsteroids(remoteAsteroids)
@@ -35,16 +37,25 @@ class AsteroidRepository @Inject constructor(
     override suspend fun getPictureOfDay(): PictureOfDayEntity {
         val localPicture = getPictureOfTheDayLocal()
         if (localPicture != null) {
+            if (localPicture.date != getTodayDate()) {
+                return PictureOfDayEntity.convert(getRemotePictureOfDayAndSave())
+            }
             return localPicture
         } else {
-            val remotePictureOfDay = getPictureOfTheDayRemote()
-            savePictureOfDay(remotePictureOfDay)
+            val remotePictureOfDay = getRemotePictureOfDayAndSave()
             return PictureOfDayEntity.convert(remotePictureOfDay)
         }
     }
 
+    private suspend fun getRemotePictureOfDayAndSave(): PictureOfDay {
+        val remotePictureOfDay = getPictureOfTheDayRemote()
+        savePictureOfDay(remotePictureOfDay)
+        return remotePictureOfDay
+    }
+
     private suspend fun savePictureOfDay(remotePictureOfDay: PictureOfDay) {
         val pictureOfDayEntity = PictureOfDayEntity.convert(pictureOfDay = remotePictureOfDay)
+        deletePictureOfDay()
         addPictureOfDay(pictureOfDayEntity)
     }
 
@@ -70,6 +81,17 @@ class AsteroidRepository @Inject constructor(
 
     override suspend fun deletePictureOfDay() {
         localDataSource.deletePictureOfDay()
+    }
+
+    override suspend fun refreshAsteroidApiContent(
+        remoteAsteroids: List<Asteroid>,
+        remotePictureOfDay: PictureOfDay
+    ) {
+        deletePictureOfDay()
+        addPictureOfDay(PictureOfDayEntity.convert(remotePictureOfDay))
+
+        localDataSource.deleteAsteroidByDate(getTodayDate())
+        addAsteroids(remoteAsteroids.map { AsteroidEntity.convert(it) })
     }
 
     private suspend fun saveAsteroids(asteroidsResponse: List<Asteroid>) {
