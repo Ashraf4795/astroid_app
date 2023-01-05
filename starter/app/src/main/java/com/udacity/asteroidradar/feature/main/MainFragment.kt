@@ -26,28 +26,42 @@ class MainFragment : Fragment() {
     private lateinit var asteroidsAdapter: AsteroidAdapter
     private lateinit var navController: NavController
 
-    private val onAsteroidItemClicked = { asteroid:Asteroid ->
+    private val onAsteroidItemClicked = OnAsteroidItemClicked { asteroid ->
         navController.navigate(MainFragmentDirections.actionShowDetail(asteroid))
     }
+
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        binding = FragmentMainBinding.inflate(inflater)
-        binding.lifecycleOwner = this
+        initBinding(inflater)
+        initObservers()
 
-        navController = findNavController()
-
-        viewModel.asteroidsStatus.observe(this.viewLifecycleOwner) {
-            handleAsteroidRequestStatus(it)
-        }
-        binding.viewModel = viewModel
 
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = findNavController()
+    }
+
+
+    private fun initObservers() {
+        viewModel.asteroidsStatus.observe(this.viewLifecycleOwner) {
+            handleAsteroidRequestStatus(it)
+        }
+    }
+
+
+    private fun initBinding(inflater: LayoutInflater) {
+        binding = FragmentMainBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
     }
 
     private fun handleAsteroidRequestStatus(status: Status) {
@@ -58,12 +72,15 @@ class MainFragment : Fragment() {
             is Failure -> {
                 Log.e(TAG, status.exception?.message.toString())
             }
-            else -> {}
+            else -> {
+                Log.e(TAG, status.toString())
+            }
         }
     }
 
     private fun initAsteroidsList(data: List<Asteroid>?) {
         asteroidsAdapter = AsteroidAdapter(data ?: emptyList(), onAsteroidItemClicked)
+        asteroidsAdapter.submitList(data)
         binding.asteroidRecycler.adapter = asteroidsAdapter
     }
 
@@ -88,5 +105,10 @@ class MainFragment : Fragment() {
         }
         return true
     }
+}
 
+open class OnAsteroidItemClicked(val onClicked: (Asteroid)-> Unit) {
+    fun onClick(asteroid: Asteroid) {
+        onClicked.invoke(asteroid)
+    }
 }
