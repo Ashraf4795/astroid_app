@@ -63,3 +63,12 @@ fun bindPictureOfDay(imageView: ImageView, url: String?) {
             .into(imageView)
     }
 }
+
+@BindingAdapter("talk_back_image")
+fun detailsImageTalkBack(imageView: ImageView, isHazardous: Boolean) {
+    if (isHazardous) {
+        imageView.contentDescription = imageView.context.resources.getString(R.string.talkback_hazardous)
+    } else {
+        imageView.contentDescription = imageView.context.resources.getString(R.string.talkback_not_hazardous)
+    }
+}
