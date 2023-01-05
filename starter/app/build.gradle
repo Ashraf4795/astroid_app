@@ -15,15 +15,14 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_KEY", API_KEY)
     }
     buildTypes {
         release {
-            buildConfigField "String", "API_KEY", "\"jxSIXzY5eqrrlLR0vgAccFLYwiHknJVDAb6i7GmF\""
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField "String", "API_KEY", "\"jxSIXzY5eqrrlLR0vgAccFLYwiHknJVDAb6i7GmF\""
             minifyEnabled false
         }
     }
