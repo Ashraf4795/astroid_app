@@ -10,16 +10,15 @@ import com.udacity.asteroidradar.base.data.model.Asteroid
 import com.udacity.asteroidradar.base.utils.getTodayDate
 import com.udacity.asteroidradar.databinding.AsteroidItemLayoutBinding
 
-class AsteroidAdapter(private val data: List<Asteroid>, val onAsteroidItemClicked: (Asteroid)-> Unit): ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>(DiffUitlCallBack()) {
+class AsteroidAdapter(private val data: List<Asteroid>, val onAsteroidItemClicked: OnAsteroidItemClicked): ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>(DiffUitlCallBack()) {
     private lateinit var binding: AsteroidItemLayoutBinding
     private val mutableAsteroidList: MutableList<Asteroid> = mutableListOf()
 
     inner class AsteroidViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        fun bind(asteroid: Asteroid, onAsteroidItemClicked: (Asteroid) -> Unit) {
+        fun bind(asteroid: Asteroid, onAsteroidItemClicked: OnAsteroidItemClicked) {
             binding.asteroid = asteroid
-            binding.root.setOnClickListener {
-                onAsteroidItemClicked.invoke(asteroid)
-            }
+            binding.clickListener = onAsteroidItemClicked
+            binding.executePendingBindings()
         }
     }
 
