@@ -40,7 +40,8 @@ class AsteroidAdapter(private val data: List<Asteroid>, val onAsteroidItemClicke
     fun onShowTodayAsteroidClicked() {
         val todayDate = getTodayDate()
         mutableAsteroidList.clear()
-        mutableAsteroidList.addAll(data.filter { it.closeApproachDate == todayDate })
+        val filteredList = data.filter { it.closeApproachDate == todayDate }
+        mutableAsteroidList.addAll(filteredList)
         notifyDataSetChanged()
     }
 
